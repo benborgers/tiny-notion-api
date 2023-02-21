@@ -1,3 +1,5 @@
+import notion from "../client";
+
 export const config = { runtime: "edge" };
 
 export default (req: Request) => {
