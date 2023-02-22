@@ -28,7 +28,6 @@ export default async (req: Request) => {
       id: pageBlock.id,
       title: pageBlock.child_page.title,
       html,
-      pageBlock,
     }),
     { headers: { "content-type": "application/json" } }
   );
