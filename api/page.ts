@@ -1,6 +1,7 @@
 import normalizeNotionId from "../lib/normalizeNotionId";
 import loadBlockWithChildren from "../lib/loadBlockWithChildren";
 import blockToHtml from "../lib/blockToHtml";
+import postprocessHtml from "../lib/postprocessHtml";
 
 export const config = { runtime: "edge" };
 
@@ -13,7 +14,7 @@ export default async (req: Request) => {
 
   const pageBlock = await loadBlockWithChildren(id);
 
-  const html = blockToHtml(pageBlock);
+  const html = postprocessHtml(blockToHtml(pageBlock));
 
   if (process.env.NODE_ENV === "development") {
     return new Response(

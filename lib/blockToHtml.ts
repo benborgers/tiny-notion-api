@@ -30,6 +30,24 @@ export default function blockToHtml(block): string {
     }`;
   }
 
+  if (
+    block.type === "numbered_list_item" ||
+    block.type === "bulleted_list_item"
+  ) {
+    const el = {
+      numbered_list_item: "ol",
+      bulleted_list_item: "ul",
+    }[block.type];
+
+    return `<${el}><li>${richTextArrayToHtml(
+      block[block.type].rich_text
+    )}</li>${
+      block.has_children
+        ? block.children.map((child) => blockToHtml(child)).join("")
+        : ""
+    }</${el}>`;
+  }
+
   console.log("Unhandled block type:", block.type);
   return "";
 }
