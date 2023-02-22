@@ -1,4 +1,5 @@
 import richTextArrayToHtml from "./richTextArrayToHtml";
+import colorClass from "./colorClass";
 
 export default function blockToHtml(block): string {
   if (block.type === "child_page") {
@@ -18,7 +19,9 @@ export default function blockToHtml(block): string {
   }
 
   if (block.type === "paragraph") {
-    return `<p>${richTextArrayToHtml(block.paragraph.rich_text)}</p>${
+    return `<p class="${colorClass(
+      block.paragraph.color
+    )}">${richTextArrayToHtml(block.paragraph.rich_text)}</p>${
       block.has_children
         ? `<div class="notion-indented">${block.children
             .map((child) => blockToHtml(child))
