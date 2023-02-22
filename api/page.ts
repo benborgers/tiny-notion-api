@@ -1,5 +1,6 @@
 import normalizeNotionId from "../lib/normalizeNotionId";
 import loadBlockWithChildren from "../lib/loadBlockWithChildren";
+import blockToHtml from "../lib/blockToHtml";
 
 export const config = { runtime: "edge" };
 
@@ -12,10 +13,20 @@ export default async (req: Request) => {
 
   const pageBlock = await loadBlockWithChildren(id);
 
+  const html = blockToHtml(pageBlock);
+
+  if (process.env.NODE_ENV === "development") {
+    return new Response(
+      `<meta charset="utf-8" /><link rel="stylesheet" href="/notion.css" />${html}`,
+      { headers: { "content-type": "text/html" } }
+    );
+  }
+
   return new Response(
     JSON.stringify({
       id: pageBlock.id,
       title: pageBlock.child_page.title,
+      html,
       pageBlock,
     }),
     { headers: { "content-type": "application/json" } }
